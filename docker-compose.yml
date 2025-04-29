@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: voice-recognition-app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+    volumes:
+      - ./logs:/app/logs
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+volumes:
+  ollama_data:
+
