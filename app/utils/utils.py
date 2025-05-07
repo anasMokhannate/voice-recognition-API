@@ -1,24 +1,25 @@
-def check_transcription_confidence() : 
-    
-    """
-    Check the confidence of the transcription.
-    """
+from flask import jsonify
 
 
-def check_intention_confidence() : 
-    
-    """
-    Check the confidence of the intention.
-    """
+def check_entities(json_response) :
+    required = ["amount", "language", "operation_type", "operation"]
+    missing = [e for e in required if e not in json_response]
 
-def check_entities() : 
+    if missing:
+        return {
+            **json_response,
+            "missing_entities": missing,
+            "response": "Quel montant souhaitez-vous retirer ?" if "amount" in missing else ""
+        }
+    return json_response
     
     """
     Check the entities presence in the transcription.
     """
 
-def refactor_response_toJson():
+def get_file_from_request(request):
+
+    if "file" not in request.files:
+        return jsonify({"error": "No audio file provided"}), 400
     
-    """
-    Refactor the response to JSON format.
-    """
+    return request.files["file"]
